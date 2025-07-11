@@ -9,7 +9,7 @@ data:extend({
   {
     type = "custom-input",
     name = "vehicle-valet-numpad-enter",
-    key_sequence = "SHIFT + NUMPAD_ENTER",
+    key_sequence = "SHIFT + KP_ENTER",
     consuming = "none"
   }
 })
