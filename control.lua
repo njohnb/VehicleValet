@@ -23,7 +23,7 @@ local function find_nearest_car(player, search_radius)
 
     local closest, min_dist = nil, math.huge
     for _, car in ipairs(cars) do
-        if not car.get_driver() and car.valid then
+        if not car.get_driver() and car.valid and car.last_user == player then
             local dist = ((car.position.x - player.position.x) ^ 2 + (car.position.y - player.position.y) ^ 2) ^ 0.5
             if dist < min_dist then
                 min_dist = dist
@@ -38,7 +38,7 @@ local function find_nearest_car(player, search_radius)
                 string.format("%.2f", min_dist)
         )
     else
-        player.print("VehicleValet: No car found within radius.")
+        player.print("VehicleValet: No car found within radius that belongs to you.")
     end
 
     return closest
@@ -368,5 +368,30 @@ script.on_event(defines.events.on_tick, function()
 
         end
         ::continue::
+    end
+end)
+
+script.on_event(defines.events.on_player_driving_changed_state, function(event)
+    local player = game.get_player(event.player_index)
+    if not player or not player.vehicle then return end
+
+    local vehicle = player.vehicle
+    local driver = vehicle.get_driver()
+
+    -- If the dummy "character" is the current driver, replace it with the player
+    if driver and driver.name == "character" and driver ~= player.character then
+        -- Remove the dummy
+        driver.destroy()
+
+        -- Set player as driver
+        vehicle.set_driver(player.character)
+
+        -- cancel autopilot if still travelling
+        local unit_number = vehicle.unit_number
+        if storage.car_paths[unit_number] then
+            storage.car_paths[unit_number] = nil
+            storage.is_travelling = false
+            player.print("[color=yellow]Valet service interrupted — you are now in control.[/color]")
+        end
     end
 end)

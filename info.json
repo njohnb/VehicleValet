@@ -1,9 +1,9 @@
 {
   "name": "VehicleValet",
-  "version": "1.0.0",
-  "title": "VehicleValet",
+  "version": "1.0.2",
+  "title": "Vehicle Valet",
   "author": "VogueRogue",
   "factorio_version": "2.0",
-  "description": "Allows you to call your car or spidertron to your location using SHIFT + ENTER.",
+  "description": "Allows you to call your car to your location using SHIFT + ENTER  or  SHIFT + NUMPAD_ENTER.",
   "dependencies": ["base >= 2.0.0"]
 }
