@@ -171,6 +171,9 @@ script.on_event({ "vehicle-valet-return", "vehicle-valet-numpad-enter" }, functi
             player.print("Error: Invalid car or player position for pathfinding.")
             return
         end
+
+        -- car is found and available, set speed to 0 in case
+        car.speed = 0
     end
 
 
